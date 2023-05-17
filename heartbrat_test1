@@ -1,0 +1,25 @@
+int ledPin = 13;
+int sensorPin = 0;
+
+double alpha = 0.75;
+int period = 20;
+double Change = 0.0;
+double oldVal = 0.0;
+double oldChange = 0.0;
+
+void setup() {
+  Serial.begin(115200);
+  pinMode(ledPin, OUTPUT);
+}
+
+void loop() {
+  int rawVal = analogRead(sensorPin);
+  double val = alpha * oldVal + (1 - alpha) * rawVal;
+  Change = val - oldVal;
+  Serial.println(rawVal);
+  digitalWrite(ledPin, (Change < 0.0 && oldChange > 0.0));
+
+  oldVal = val;
+  oldChange = Change;
+  delay(period);
+}
